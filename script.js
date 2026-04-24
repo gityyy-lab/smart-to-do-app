@@ -33,14 +33,17 @@ function addTask() {
   const delBtn = document.createElement("button");
   delBtn.textContent = "X";
 
-  delBtn.onclick = function () {
-    if (li.classList.contains("completed")) {
-      completedTasks--;
-    }
-    li.remove();
-    totalTasks--;
-    updateProgress();
-  };
+ delBtn.onclick = function (event) {
+  event.stopPropagation(); // 🔥 THIS FIXES THE BUG
+
+  if (li.classList.contains("completed")) {
+    completedTasks--;
+  }
+
+  li.remove();
+  totalTasks--;
+  updateProgress();
+};
 
   li.appendChild(delBtn);
 
