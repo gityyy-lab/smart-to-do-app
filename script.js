@@ -47,7 +47,7 @@ function renderTasks() {
 
     // delete
     const delBtn = document.createElement("button");
-    delBtn.textContent = "X";
+    delBtn.textContent = "🗑";
 
     delBtn.onclick = (event) => {
       event.stopPropagation();
