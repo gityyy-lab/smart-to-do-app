@@ -1,61 +1,72 @@
-let completedTasks = 0;
-let totalTasks = 0;
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 function addTask() {
   const input = document.getElementById("taskInput");
   const priority = document.getElementById("priority").value;
-  const taskText = input.value;
 
-  if (taskText === "") return;
+  if (input.value === "") return;
 
-  const li = document.createElement("li");
-  li.textContent = taskText;
-
-  // add priority class
-  if (priority === "High") li.classList.add("high");
-  if (priority === "Medium") li.classList.add("medium");
-  if (priority === "Low") li.classList.add("low");
-
-  // complete toggle
-  li.onclick = function () {
-    li.classList.toggle("completed");
-
-    if (li.classList.contains("completed")) {
-      completedTasks++;
-    } else {
-      completedTasks--;
-    }
-
-    updateProgress();
+  const task = {
+    text: input.value,
+    priority: priority,
+    completed: false
   };
 
-  // delete button
-  const delBtn = document.createElement("button");
-  delBtn.textContent = "X";
-
- delBtn.onclick = function (event) {
-  event.stopPropagation(); // 🔥 THIS FIXES THE BUG
-
-  if (li.classList.contains("completed")) {
-    completedTasks--;
-  }
-
-  li.remove();
-  totalTasks--;
-  updateProgress();
-};
-
-  li.appendChild(delBtn);
-
-  document.getElementById("taskList").appendChild(li);
-
-  totalTasks++;
-  updateProgress();
+  tasks.push(task);
+  saveTasks();
+  renderTasks();
 
   input.value = "";
 }
 
-function updateProgress() {
+function renderTasks() {
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
+
+  let completedTasks = 0;
+
+  tasks.forEach((task, index) => {
+    const li = document.createElement("li");
+    li.textContent = task.text;
+
+    // priority
+    li.classList.add(task.priority.toLowerCase());
+
+    // completed
+    if (task.completed) {
+      li.classList.add("completed");
+      completedTasks++;
+    }
+
+    // toggle complete
+    li.onclick = () => {
+      task.completed = !task.completed;
+      saveTasks();
+      renderTasks();
+    };
+
+    // delete
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "X";
+
+    delBtn.onclick = (event) => {
+      event.stopPropagation();
+      tasks.splice(index, 1);
+      saveTasks();
+      renderTasks();
+    };
+
+    li.appendChild(delBtn);
+    list.appendChild(li);
+  });
+
   document.getElementById("progress").textContent =
-    `${completedTasks}/${totalTasks} tasks completed`;
+    `${completedTasks}/${tasks.length} tasks completed`;
 }
+
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// load on start
+renderTasks();
