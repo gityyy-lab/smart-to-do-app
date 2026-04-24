@@ -39,15 +39,11 @@ function renderTasks() {
     }
 
     // toggle complete
-    const checkbox = document.createElement("input");
-checkbox.type = "checkbox";
-checkbox.checked = task.completed;
-
-checkbox.onchange = (event) => {
-  event.stopPropagation();
-  task.completed = !task.completed;
-  saveTasks();
-  renderTasks();
+     li.onclick = () => {
+      task.completed = !task.completed;
+      saveTasks();
+      renderTasks();
+    };
 };
 
 li.prepend(checkbox);
