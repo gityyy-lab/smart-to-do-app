@@ -1,12 +1,19 @@
-# smart-to-do-app
- A simple task management web app with priority tracking and progress visualization.
-## Features
-- Add and delete tasks
-- Mark tasks as completed
-- Priority levels (High, Medium, Low)
-- Progress tracking
+# Smart To-Do App
 
-## Tech Stack
+A modern task management web app with priority levels and progress tracking.
+
+## 🚀 Features
+- Add & delete tasks
+- Mark tasks as completed
+- Priority system (High, Medium, Low)
+- Progress tracking
+- Data saved using Local Storage
+
+## 🛠 Tech Stack
 - HTML
 - CSS
 - JavaScript
+
+## 📸 Preview
+Clean UI with glassmorphism design and smooth animations.
+
