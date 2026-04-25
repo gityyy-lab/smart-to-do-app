@@ -4,7 +4,7 @@ function addTask() {
   const input = document.getElementById("taskInput");
   const priority = document.getElementById("priority").value;
 
-  if (input.value === "") return;
+  if (input.value.trim() === "") return;
 
   const task = {
     text: input.value,
@@ -27,29 +27,33 @@ function renderTasks() {
 
   tasks.forEach((task, index) => {
     const li = document.createElement("li");
-    li.textContent = task.text;
 
-    // priority
-    li.classList.add(task.priority.toLowerCase());
+    // checkbox
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = task.completed;
 
-    // completed
-    if (task.completed) {
-      li.classList.add("completed");
-      completedTasks++;
-    }
-
-    // toggle complete
-     li.onclick = () => {
+    checkbox.onchange = (event) => {
+      event.stopPropagation();
       task.completed = !task.completed;
       saveTasks();
       renderTasks();
     };
-};
 
-li.prepend(checkbox);
-    };
+    // task text
+    const span = document.createElement("span");
+    span.textContent = task.text;
 
-    // delete
+    // priority style
+    li.classList.add(task.priority.toLowerCase());
+
+    // completed style
+    if (task.completed) {
+      span.classList.add("completed");
+      completedTasks++;
+    }
+
+    // delete button
     const delBtn = document.createElement("button");
     delBtn.textContent = "🗑";
 
@@ -60,7 +64,10 @@ li.prepend(checkbox);
       renderTasks();
     };
 
+    li.appendChild(checkbox);
+    li.appendChild(span);
     li.appendChild(delBtn);
+
     list.appendChild(li);
   });
 
@@ -72,5 +79,5 @@ function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-// load on start
+// load tasks on start
 renderTasks();
